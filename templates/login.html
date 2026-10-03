@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | SmartGram{% endblock %}
+
+{% block content %}
+
+<div class="auth">
+
+    <div class="authintro">
+
+        <div class="eyebrow">WELCOME TO SMARTGRAM</div>
+
+        <h2>Village services, made simple.</h2>
+
+        <p>
+            Choose the appropriate portal to continue
+            to SmartGram.
+        </p>
+
+        <p>
+            ✓ Transparent village services<br>
+            ✓ Complaint tracking<br>
+            ✓ Development information<br>
+            ✓ Citizen participation
+        </p>
+
+    </div>
+
+
+    <div class="authform">
+
+        <div class="eyebrow">LOGIN</div>
+
+        <h2>Choose your portal</h2>
+
+        <p class="login-subtitle">
+            Select your account type to continue.
+        </p>
+
+
+        <!-- CITIZEN -->
+
+        <a href="{{ url_for('citizen_login') }}"
+           class="login-option">
+
+            <div class="login-icon">
+                👤
+            </div>
+
+            <div class="login-option-content">
+
+                <h3>Citizen Login</h3>
+
+                <p>
+                    Report problems, track complaints
+                    and access village services.
+                </p>
+
+                <span>
+                    Continue as Citizen →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- OFFICIAL -->
+
+        <a href="{{ url_for('official_login') }}"
+           class="login-option">
+
+            <div class="login-icon">
+                🏛️
+            </div>
+
+            <div class="login-option-content">
+
+                <h3>Official Login</h3>
+
+                <p>
+                    For village officers and administration
+                    to manage village services.
+                </p>
+
+                <span>
+                    Continue as Official →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <div class="register-link">
+
+            New citizen?
+
+            <a href="{{ url_for('register') }}">
+                Create an account
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

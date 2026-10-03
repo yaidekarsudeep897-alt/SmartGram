@@ -1,0 +1,30 @@
+SmartGram_HumanMade/
+├── app.py
+├── requirements.txt
+├── README.md
+├── DATABASE_SCHEMA.md
+├── database/
+│   └── smartgram.db (created automatically)
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── citizen.html
+│   ├── report.html
+│   ├── complaints.html
+│   ├── complaint.html
+│   ├── projects.html
+│   ├── schemes.html
+│   ├── emergency.html
+│   ├── admin.html
+│   ├── admin_complaints.html
+│   ├── users.html
+│   ├── admin_projects.html
+│   ├── admin_schemes.html
+│   ├── announcements.html
+│   └── officer.html
+├── static/
+│   ├── css/style.css
+│   └── js/app.js
+└── uploads/

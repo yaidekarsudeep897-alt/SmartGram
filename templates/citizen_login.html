@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Citizen Login | SmartGram{% endblock %}
+
+{% block content %}
+
+<div class="auth">
+
+    <div class="authintro">
+        <div class="eyebrow">SMARTGRAM</div>
+
+        <h2>Welcome, Citizen.</h2>
+
+        <p>
+            Access village services, report local problems,
+            track complaints and stay updated with village development.
+        </p>
+
+        <p>
+            ✓ Report problems<br>
+            ✓ Track complaints<br>
+            ✓ View development projects<br>
+            ✓ Government schemes
+        </p>
+    </div>
+
+    <div class="authform">
+
+        <div class="eyebrow">CITIZEN ACCOUNT</div>
+
+        <h2>Citizen Login</h2>
+
+        <form method="POST">
+
+            <label>Email</label>
+            <input
+                class="input"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                class="input"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button class="greenbtn wide" type="submit">
+                Login as Citizen
+            </button>
+
+        </form>
+
+        <div class="register-link">
+            New citizen?
+            <a href="{{ url_for('register') }}">
+                Create an account
+            </a>
+        </div>
+
+        <div class="register-link">
+            Are you a village official?
+            <a href="{{ url_for('official_login') }}">
+                Official Login
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

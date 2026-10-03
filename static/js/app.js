@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.alert').forEach(a=>setTimeout(()=>a.remove(),4500));document.querySelectorAll('form').forEach(f=>f.addEventListener('submit',()=>{let b=f.querySelector('button');if(b){b.disabled=true;setTimeout(()=>b.innerText='Please wait...',0)}}));});
