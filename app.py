@@ -4,18 +4,27 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 BASE=os.path.dirname(os.path.abspath(__file__))
-DB=os.path.join(BASE,'database','smartgram.db')
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_DIR = os.path.join(BASE_DIR, "database")
+
+os.makedirs(DB_DIR, exist_ok=True)
+
+DB = os.path.join(DB_DIR, "smartgram.db")
 UPLOAD=os.path.join(BASE,'uploads')
 os.makedirs(UPLOAD,exist_ok=True)
 app=Flask(__name__)
 app.secret_key='smartgram-change-this-key'
 app.config['MAX_CONTENT_LENGTH']=5*1024*1024
-
 def db():
-    c=sqlite3.connect(DB); c.row_factory=sqlite3.Row; return c
+    c = sqlite3.connect(DB)
+    c.row_factory = sqlite3.Row
+    return c
 
 def init_db():
-    c=db(); c.executescript('''
+    c = db()
+    c.executescript('''
     CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,email TEXT UNIQUE,phone TEXT,password TEXT,role TEXT DEFAULT 'citizen',village TEXT,department TEXT,created_at TEXT DEFAULT CURRENT_TIMESTAMP);
     CREATE TABLE IF NOT EXISTS complaints(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,title TEXT,description TEXT,category TEXT,priority TEXT,location TEXT,image TEXT,status TEXT DEFAULT 'Pending',assigned_to INTEGER,note TEXT,created_at TEXT DEFAULT CURRENT_TIMESTAMP,updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
     CREATE TABLE IF NOT EXISTS projects(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,description TEXT,location TEXT,budget REAL,start_date TEXT,end_date TEXT,progress INTEGER,status TEXT);
