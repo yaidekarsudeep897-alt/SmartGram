@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Registered Users | SmartGram{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">ADMINISTRATION</p><h1>Registered users</h1><p>View citizen, officer, and administrator accounts. Passwords are never displayed.</p></div>
+  <a class="button button-outline" href="{{ url_for('admin_dashboard') }}">← Dashboard</a>
+</section>
+<section class="panel">
+  <div class="panel-heading"><div><h2>All accounts</h2><p>{{ users|length }} registered account(s)</p></div></div>
+  {% if users %}<div class="table-wrap"><table>
+    <thead><tr><th>Name</th><th>Role</th><th>Email / Phone</th><th>Gram Panchayat</th><th>Department</th><th>Joined</th></tr></thead>
+    <tbody>{% for u in users %}<tr>
+      <td><strong>{{ u.name }}</strong><small>ID: {{ u.id }}</small></td>
+      <td><span class="status-pill">{{ u.role|title }}</span></td>
+      <td>{{ u.email }}{% if u.phone %}<small>{{ u.phone }}</small>{% endif %}</td>
+      <td>{{ u.gp_name or '—' }}{% if u.taluk or u.district %}<small>{{ u.taluk or '' }}{% if u.taluk and u.district %}, {% endif %}{{ u.district or '' }}</small>{% endif %}</td>
+      <td>{{ u.department or '—' }}</td><td>{{ u.created_at or '—' }}</td>
+    </tr>{% endfor %}</tbody>
+  </table></div>{% else %}<div class="empty-state"><h3>No users found</h3></div>{% endif %}
+</section>
+{% endblock %}

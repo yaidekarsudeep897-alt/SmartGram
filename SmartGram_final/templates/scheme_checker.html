@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Scheme Eligibility Checker | SmartGram{% endblock %}
+{% block content %}
+<section class="page-heading"><p class="eyebrow">CITIZEN SERVICES</p><h1>Government Scheme Eligibility Checker</h1><p>Answer a few basic questions to discover potentially relevant schemes. This is guidance only; the official department decides eligibility.</p></section>
+<div class="content-grid">
+<section class="panel"><h2>Check schemes for you</h2>
+<form method="post" class="form-grid">
+<label>Age <input type="number" name="age" min="1" max="120" required></label>
+<label>Occupation <select name="occupation" required><option value="">Choose occupation</option><option>Farmer</option><option>Student</option><option>Self-employed</option><option>Daily wage worker</option><option>Employed</option><option>Unemployed</option><option>Senior citizen</option><option>Other</option></select></label>
+<label>Approximate annual household income <select name="income_range" required><option value="">Choose income range</option><option>Below ₹1 lakh</option><option>₹1–2.5 lakh</option><option>₹2.5–5 lakh</option><option>Above ₹5 lakh</option><option>Prefer not to say</option></select></label>
+<label>Scheme category <select name="category" required><option value="">Choose category</option><option>Agriculture</option><option>Housing</option><option>Health</option><option>Education</option><option>Employment</option><option>Pension and social support</option><option>All categories</option></select></label>
+<div><button class="btn btn-primary" type="submit">Find relevant schemes</button></div>
+</form></section>
+<section class="panel"><h2>Available schemes</h2><p class="muted">Scheme descriptions and eligibility must be verified against current official rules.</p>{% for s in all_schemes %}<article class="list-card"><h3>{{ s.name }}</h3><p>{{ s.description }}</p><p><strong>Eligibility:</strong> {{ s.eligibility or 'Check official scheme rules.' }}</p><p><strong>Benefits:</strong> {{ s.benefits or 'See official scheme information.' }}</p>{% if s.documents %}<p><strong>Documents:</strong> {{ s.documents }}</p>{% endif %}{% if s.link %}<a href="{{ s.link }}" target="_blank" rel="noopener">Official information ↗</a>{% endif %}</article>{% else %}<p>No schemes have been added yet.</p>{% endfor %}</section>
+</div>
+{% if results %}<section class="panel"><h2>Potential matches</h2><p>These schemes matched the category you selected. This is not an official eligibility decision.</p><div class="card-grid">{% for s in results %}<article class="list-card"><h3>{{ s.name }}</h3><p>{{ s.description }}</p><p><strong>Eligibility:</strong> {{ s.eligibility }}</p><p><strong>Documents:</strong> {{ s.documents }}</p>{% if s.link %}<a href="{{ s.link }}" target="_blank" rel="noopener">Official information ↗</a>{% endif %}</article>{% endfor %}</div></section>{% endif %}
+{% endblock %}
