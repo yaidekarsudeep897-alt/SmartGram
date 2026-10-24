@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block title %}Notifications | SmartGram{% endblock %}
-{% block content %}
-<section class="page-heading"><div><p class="eyebrow">UPDATES</p><h1>Your notifications</h1><p>Updates from the Panchayat about your complaint activity.</p></div><a class="button button-light" href="{{ url_for('citizen_dashboard') }}">← Dashboard</a></section>
-<section class="panel notification-panel">{% if notifications %}{% for item in notifications %}<article class="notification-item"><span class="notification-icon">{% if 'Resolved' in item.message %}✓{% elif 'status' in item.title|lower %}↻{% else %}✉{% endif %}</span><div><strong>{{ item.title }}</strong><p>{{ item.message }}</p><small>{{ item.created_at }}{% if item.complaint_id %} · <a href="{{ url_for('complaint_detail',complaint_id=item.complaint_id) }}">View complaint</a>{% endif %}</small></div><span class="chip chip-green">Read</span></article>{% endfor %}{% else %}<div class="empty-state"><span>♧</span><h3>You're all caught up</h3><p>When an official updates one of your complaints, the update will appear here.</p></div>{% endif %}</section>
-{% endblock %}
