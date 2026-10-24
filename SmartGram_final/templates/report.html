@@ -1,0 +1,124 @@
+{% extends 'base.html' %}{% block title %}Report a problem | SmartGram{% endblock %}{% block content %}<div class="mb-3">
+    <label for="description" class="form-label">
+        Describe the problem
+    </label>
+
+    <div class="input-group">
+        <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            required
+        ></textarea>
+
+        <button
+            type="button"
+            class="btn btn-outline-success"
+            id="voiceBtn"
+        >
+            🎙 Speak
+        </button>
+    </div>
+
+    <small id="voiceStatus" class="text-muted">
+        You can speak your complaint or type it.
+    </small>
+</div><div class="narrow-page wide"><a class="back-link" href="{{ url_for('citizen_dashboard') }}">← Back to dashboard</a><section class="panel form-panel"><p class="eyebrow">CITIZEN COMPLAINT</p><h1>Report a village issue</h1><p class="muted">Give clear details so the local officer can understand and act on the issue.</p><div class="notice notice-info"><strong>Automatic classification is enabled.</strong> SmartGram suggests a category and priority from keywords in your description. An officer can review and update the status.</div><form method="post" enctype="multipart/form-data" class="form-stack"><label for="gp_id">Gram Panchayat <span class="required">*</span></label><select class="text-input" id="gp_id" name="gp_id" required><option value="">Select the Panchayat responsible for this issue</option>{% for gp in gram_panchayats %}<option value="{{ gp.id }}" {% if session.get('gp_id')==gp.id %}selected{% endif %}>{{ gp.name }} — {{ gp.taluk }}, {{ gp.district }}</option>{% endfor %}</select><label for="title">Short title</label><input class="text-input" id="title" name="title" maxlength="150" placeholder="e.g. Water pipeline leaking near school" required><label for="description">Describe the problem</label><textarea class="text-input" id="description" name="description" rows="5" maxlength="4000" placeholder="What happened, where did it happen, and how is it affecting residents?" required></textarea><div class="two-col"><div><label for="location">Exact location / landmark</label><input class="text-input" id="location" name="location" maxlength="200" placeholder="Street, ward, landmark"></div><div><label for="image">Photo evidence <span class="muted small">(optional, max 5 MB)</span></label><input class="text-input file-input" id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"></div></div><label class="consent-option"><input type="checkbox" name="public_visible" value="yes"><span><strong>Share this issue on Village Pulse</strong><small>Optional. Only the title, category, location, status and support count are public. Your name, email, description and photo stay private.</small></span></label><button class="button button-primary button-full">Submit complaint</button><p class="small muted">Do not upload private documents or images of people without permission. For immediate danger, contact the appropriate emergency service.</p><div class="mb-3">
+    <label for="location" class="form-label">
+        Location or landmark
+    </label>
+
+    <input
+        type="text"
+        id="location"
+        name="location"
+        class="form-control"
+        placeholder="Street, school or bus stop"
+    >
+
+    <button
+        type="button"
+        class="btn btn-outline-success mt-2"
+        id="locBtn"
+    >
+        📍 Use my location
+    </button>
+
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+
+    <small id="locationStatus" class="text-muted">
+        Location sharing is optional.
+    </small>
+</div></form><script>
+const voiceBtn = document.getElementById("voiceBtn");
+const voiceStatus = document.getElementById("voiceStatus");
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    voiceBtn.disabled = true;
+    voiceStatus.textContent =
+        "Voice recognition is not supported in this browser.";
+} else {
+    voiceBtn.addEventListener("click", function () {
+        const recognition = new SpeechRecognition();
+
+        // Change to "en-IN" for English speech.
+        recognition.lang = "kn-IN";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        voiceStatus.textContent = "Listening...";
+
+        recognition.onresult = function (event) {
+            const spokenText = event.results[0][0].transcript;
+            const description =
+                document.getElementById("description");
+
+            description.value +=
+                (description.value ? " " : "") + spokenText;
+
+            voiceStatus.textContent =
+                "Speech added. Review it before submitting.";
+        };
+
+        recognition.onerror = function () {
+            voiceStatus.textContent =
+                "Could not capture speech. Please type your complaint.";
+        };
+
+        recognition.start();
+    });
+}
+
+document.getElementById("locBtn").addEventListener("click", function () {
+    const status = document.getElementById("locationStatus");
+
+    if (!navigator.geolocation) {
+        status.textContent = "Location is not supported.";
+        return;
+    }
+
+    status.textContent = "Requesting location permission...";
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            document.getElementById("latitude").value =
+                position.coords.latitude;
+
+            document.getElementById("longitude").value =
+                position.coords.longitude;
+
+            status.textContent = "Location captured successfully.";
+        },
+        function () {
+            status.textContent =
+                "Location unavailable. You can enter a landmark instead.";
+        }
+    );
+});
+</script></section></div>{% endblock %}

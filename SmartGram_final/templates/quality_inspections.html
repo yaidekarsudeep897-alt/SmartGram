@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Development Quality Inspections | SmartGram{% endblock %}
+{% block content %}
+<section class="page-heading"><p class="eyebrow">DEVELOPMENT ACCOUNTABILITY</p><h1>Development Work Quality Inspection</h1><p>Record site inspections, document findings, and track corrective action for village development projects.</p></section>
+{% if current_role in ['officer','admin'] %}
+<section class="panel"><h2>Record an inspection</h2>
+{% if projects %}<form method="post" enctype="multipart/form-data" class="form-grid">
+<label>Development project <select name="project_id" required><option value="">Select project</option>{% for p in projects %}<option value="{{ p.id }}">{{ p.name }}{% if p.location %} — {{ p.location }}{% endif %}</option>{% endfor %}</select></label>
+<label>Inspection date <input type="date" name="inspection_date" required></label>
+<label>Inspection result <select name="result" required><option value="">Select result</option><option>Passed</option><option>Needs improvement</option><option>Failed</option></select></label>
+<label>Follow-up date (if needed) <input type="date" name="followup_date"></label>
+<label class="full-width">Findings / observed defects <textarea name="findings" rows="3" required maxlength="3000" placeholder="Describe what was inspected and what was found"></textarea></label>
+<label class="full-width">Corrective action <textarea name="corrective_action" rows="2" maxlength="2000" placeholder="Action required, responsible team, or next steps"></textarea></label>
+<label class="full-width">Inspection photograph (JPG, PNG, WEBP; max 5 MB) <input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"></label>
+<div><button class="btn btn-primary" type="submit">Save inspection report</button></div></form>{% else %}<p>No projects are assigned to your account yet. Add a development project first.</p>{% endif %}</section>
+{% endif %}
+<section class="panel"><h2>{% if current_role == 'citizen' %}Published inspection reports{% else %}Inspection history{% endif %}</h2>
+{% for i in inspections %}<article class="list-card"><div class="list-card-heading"><h3>{{ i.project_name }}</h3><span class="status-pill">{{ i.result }}</span></div><p><strong>Gram Panchayat:</strong> {{ i.gp_name or 'Not specified' }} · <strong>Inspection date:</strong> {{ i.inspection_date }}</p><p><strong>Inspector:</strong> {{ i.inspector_name }}</p><p><strong>Findings:</strong> {{ i.findings }}</p>{% if i.corrective_action %}<p><strong>Corrective action:</strong> {{ i.corrective_action }}</p>{% endif %}{% if i.followup_date %}<p><strong>Follow-up date:</strong> {{ i.followup_date }}</p>{% endif %}{% if i.photo_filename %}<a href="{{ url_for('uploaded_file', filename=i.photo_filename) }}" target="_blank" rel="noopener">View inspection photo</a>{% endif %}</article>{% else %}<p>No inspection reports have been recorded yet.</p>{% endfor %}</section>
+{% endblock %}

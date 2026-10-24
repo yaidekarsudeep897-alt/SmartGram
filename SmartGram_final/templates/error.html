@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}{{ code }} | SmartGram{% endblock %}{% block content %}<section class="panel error-panel"><span class="error-code">{{ code }}</span><h1>Something went wrong</h1><p>{{ message }}</p><a class="button button-primary" href="{{ url_for('home') }}">Return to home</a></section>{% endblock %}

@@ -1,0 +1,23 @@
+SMARTGRAM — CLEAN INSTALLATION
+
+1. Extract this ZIP into a NEW folder (example: D:\SmartGram_Rebuilt).
+2. Open that folder in VS Code.
+3. Open Terminal and run these commands one at a time:
+
+   python -m venv .venv
+   .venv\Scripts\Activate.ps1
+   python -m pip install -r requirements.txt
+   python app.py
+
+4. Open http://127.0.0.1:5000 in Chrome.
+5. For administrator demo login, use:
+   Email: admin@smartgram.local
+   Password: admin12345
+6. Demo official login: officer@smartgram.local / officer12345. Select Adagal (Badami taluk, Bagalkote district).
+7. After admin login, open Official accounts to create additional officers linked to their own Gram Panchayats.
+8. Citizens should register first, selecting their district and Gram Panchayat.
+
+IMPORTANT
+- Do not copy only app.py over the old project. Keep this rebuilt folder's templates, static, data and requirements together.
+- Do not publish the demo credentials or development secret key to a public server.
+- Directory data is based on the provided mapping CSV; confirm it against the latest official LGD directory before real use.

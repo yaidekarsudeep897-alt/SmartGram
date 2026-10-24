@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Public Budget | SmartGram{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2>Public Budget Transparency</h2>
+    <p class="text-muted">
+        View budget entries recorded by the Gram Panchayat administration.
+    </p>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card p-3 h-100">
+                <p>Total allocation</p>
+                <h3>₹{{ "{:,.0f}".format(totals["allocated"] or 0) }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 h-100">
+                <p>Recorded spending</p>
+                <h3>₹{{ "{:,.0f}".format(totals["spent"] or 0) }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 h-100">
+                <p>Remaining balance</p>
+                <h3>₹{{ "{:,.0f}".format(remaining) }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Financial year</th>
+                        <th>Category</th>
+                        <th>Source</th>
+                        <th>Allocated</th>
+                        <th>Spent</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in rows %}
+                    {% set pct = (item.spent / item.allocated * 100)
+                        if item.allocated else 0 %}
+                    <tr>
+                        <td>{{ item.financial_year }}</td>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.source or "-" }}</td>
+                        <td>₹{{ "{:,.0f}".format(item.allocated or 0) }}</td>
+                        <td>₹{{ "{:,.0f}".format(item.spent or 0) }}</td>
+                        <td>{{ "%.1f"|format(pct) }}%</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No budget records available.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <p class="text-muted mt-3">
+        Figures depend on the records entered by the administration.
+        Verify official financial figures before making decisions.
+    </p>
+</div>
+{% endblock %}
